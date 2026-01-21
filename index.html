@@ -233,4 +233,43 @@
 
         // Digital
         document.getElementById('digital').innerText = 
-            `${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}:${s.toString().padStart(2
+            `${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
+
+        // Analógico
+        document.getElementById('as').style.transform = `translateX(-50%) rotate(${s * 6}deg)`;
+        document.getElementById('am').style.transform = `translateX(-50%) rotate(${m * 6}deg)`;
+        document.getElementById('ah').style.transform = `translateX(-50%) rotate(${(h % 12) * 30 + m * 0.5}deg)`;
+
+        // Highlight Individual por Célula
+        document.querySelectorAll('td[data-t]').forEach(cell => {
+            const [startStr, endStr] = cell.dataset.t.split('-');
+            let start = toMins(startStr);
+            let end = toMins(endStr);
+            
+            if (end === 0) end = 1440; // Meia-noite como fim do dia
+
+            let active = false;
+            if (start < end) {
+                active = (cur >= start && cur < end);
+            } else {
+                // Caso atravesse meia-noite
+                active = (cur >= start || cur < end);
+            }
+
+            if (active) cell.classList.add('active-task');
+            else cell.classList.remove('active-task');
+        });
+
+        // Anti-Burn-In (Movimento orbital contínuo de 2px)
+        const wrap = document.getElementById('master-wrapper');
+        const angle = now.getTime() / 3000;
+        wrap.style.transform = `translate(${Math.cos(angle)*2}px, ${Math.sin(angle)*2}px)`;
+    }
+
+    // Executa imediatamente e define o intervalo
+    update();
+    setInterval(update, 1000);
+</script>
+
+</body>
+</html>
