@@ -2,7 +2,7 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Rotina Familiar</title>
+    <title>Rotina Familiar - Versão Final</title>
     <style>
         :root {
             --bg: #050505;
@@ -30,7 +30,7 @@
             box-sizing: border-box;
         }
 
-        .left-panel { flex: 2.2; display: flex; flex-direction: column; }
+        .left-panel { flex: 2.3; display: flex; flex-direction: column; }
 
         table {
             width: 100%;
@@ -43,18 +43,19 @@
         th, td {
             border: 1px solid var(--border);
             text-align: center;
-            padding: 2px;
+            padding: 3px;
             background: #080808;
             overflow: hidden;
         }
 
-        th { background: #151515; color: white; height: 30px; font-size: 13px; }
-        .time-col { width: 95px; font-weight: bold; color: #666; background: #0d0d0d; }
+        th { background: #151515; color: white; height: 35px; font-size: 13px; }
+        .time-col { width: 100px; font-weight: bold; color: #666; background: #0d0d0d; }
 
         .active-task {
             background-color: var(--highlight) !important;
             color: var(--accent) !important;
             font-weight: bold;
+            box-shadow: inset 0 0 10px rgba(0, 255, 65, 0.1);
         }
 
         .right-panel {
@@ -67,10 +68,10 @@
             background: #080808;
         }
 
-        #digital { font-size: 5vw; font-family: 'Consolas', monospace; color: var(--accent); }
+        #digital { font-size: 5.5vw; font-family: 'Consolas', monospace; color: var(--accent); }
         
         #analog {
-            width: min(250px, 28vh); height: min(250px, 28vh);
+            width: min(260px, 30vh); height: min(260px, 30vh);
             border: 4px solid #333; border-radius: 50%;
             position: relative;
         }
@@ -106,21 +107,22 @@
                 </tr>
                 <tr>
                     <td class="time-col">07:00 - 09:00</td>
-                    <td rowspan="3" data-t="07:00-11:45">CMT</td>
+                    <td rowspan="4" data-t="07:00-11:45">CMT</td>
                     <td data-t="07:00-09:00">Translado CMT + Café da Manhã</td>
                 </tr>
                 <tr>
                     <td class="time-col">09:00 - 10:00</td>
-                    <td rowspan="3" data-t="09:00-11:45">Café da Manhã + Org. para Terapia + Espaço Cativar</td>
+                    <td rowspan="4" data-t="09:00-11:45">Café da Manhã + Org. para Terapia + Espaço Cativar</td>
                     <td data-t="09:00-10:00">Café da Manhã + Org. para Terapia</td>
                     <td rowspan="3" data-t="09:00-11:45">Faxina + Organização pra Terapia + Espaço Cativar</td>
                 </tr>
                 <tr>
                     <td class="time-col">10:00 - 11:00</td>
-                    <td rowspan="2" data-t="10:00-11:45">Preparo do Almoço</td>
+                    <td data-t="10:00-11:00">Preparo do Almoço</td>
                 </tr>
                 <tr>
                     <td class="time-col">11:00 - 11:45</td>
+                    <td data-t="11:00-11:45">Preparo do Almoço</td>
                 </tr>
                 <tr>
                     <td class="time-col">11:45 - 13:00</td>
