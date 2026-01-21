@@ -33,6 +33,21 @@
 
         .active-task { background-color: var(--highlight) !important; color: var(--accent) !important; font-weight: bold; }
 
+        /* Estilo do Novo Quadro Dinâmico */
+        #dynamic-status {
+            width: 80%;
+            height: 100px;
+            border: 2px solid var(--accent);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: #101010;
+        }
+        #status-name { font-size: 1.2vw; color: var(--text); text-transform: uppercase; margin-bottom: 5px; }
+        #status-task { font-size: 1.8vw; color: var(--accent); font-weight: bold; }
+
         #digital { font-size: 5vw; font-family: 'Consolas', monospace; color: var(--accent); }
         #analog { width: min(250px, 28vh); height: min(250px, 28vh); border: 4px solid #333; border-radius: 50%; position: relative; }
         .hand { position: absolute; bottom: 50%; left: 50%; transform-origin: bottom; background: #888; transform: translateX(-50%); }
@@ -146,6 +161,10 @@
     </div>
 
     <div class="right-panel">
+        <div id="dynamic-status">
+            <div id="status-name">-</div>
+            <div id="status-task">-</div>
+        </div>
         <div id="digital">00:00:00</div>
         <div id="analog">
             <div class="pin"></div>
@@ -159,6 +178,9 @@
 <script>
     function toM(s) { const [h, m] = s.split(':').map(Number); return h * 60 + m; }
 
+    let cycleIndex = 0;
+    const names = ["Babies", "Cavalo", "Mamãe", "Papai"];
+
     function update() {
         const n = new Date();
         const h = n.getHours();
@@ -171,13 +193,31 @@
         document.getElementById('am').style.transform = `translateX(-50%) rotate(${m * 6}deg)`;
         document.getElementById('ah').style.transform = `translateX(-50%) rotate(${(h % 12) * 30 + m * 0.5}deg)`;
 
+        let currentActiveTasks = {};
+
         document.querySelectorAll('td[data-t]').forEach(c => {
             const [sStr, eStr] = c.dataset.t.split('-');
             let start = toM(sStr), end = toM(eStr);
             if (end === 0) end = 1440;
             let active = (start < end) ? (nowM >= start && nowM < end) : (nowM >= start || nowM < end);
-            if (active) c.classList.add('active-task'); else c.classList.remove('active-task');
+            
+            if (active) {
+                c.classList.add('active-task');
+                // Mapeia qual tarefa pertence a qual coluna
+                const colIndex = c.cellIndex - (c.rowSpan > 1 || c.parentElement.cells.length < 5 ? 0 : 0); 
+                // Para garantir precisão, pegamos o nome da coluna pelo th
+                const headerName = document.querySelector(`th:nth-child(${c.cellIndex + 1})`)?.innerText;
+                if(headerName) currentActiveTasks[headerName] = c.innerText;
+            } else {
+                c.classList.remove('active-task');
+            }
         });
+
+        // Alternância do quadro dinâmico a cada 3 segundos (baseado nos segundos do relógio)
+        cycleIndex = Math.floor(s / 3) % 4;
+        const currentName = names[cycleIndex];
+        document.getElementById('status-name').innerText = currentName;
+        document.getElementById('status-task').innerText = currentActiveTasks[currentName] || "---";
     }
 
     setInterval(update, 1000);
