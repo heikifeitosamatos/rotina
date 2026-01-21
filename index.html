@@ -2,7 +2,7 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Rotina Familiar</title>
+    <title>Rotina Familiar - Atualizada</title>
     <style>
         :root {
             --bg: #050505;
@@ -27,11 +27,10 @@
         .right-panel { flex: 1; border-left: 1px solid var(--border); display: flex; flex-direction: column; justify-content: space-around; align-items: center; background: #080808; }
 
         table { width: 100%; height: 100%; border-collapse: collapse; table-layout: fixed; font-size: clamp(9px, 1.1vh, 12px); }
-        th, td { border: 1px solid var(--border); text-align: center; padding: 2px; background: #080808; }
+        th, td { border: 1px solid var(--border); text-align: center; padding: 2px; background: #080808; overflow: hidden; }
         th { background: #151515; color: white; height: 30px; font-size: 13px; }
         .time-col { width: 100px; font-weight: bold; color: #666; }
 
-        /* Estilo do Destaque */
         .active-task { background-color: var(--highlight) !important; color: var(--accent) !important; font-weight: bold; }
 
         #digital { font-size: 5vw; font-family: 'Consolas', monospace; color: var(--accent); }
@@ -55,7 +54,7 @@
                     <th>Papai</th>
                 </tr>
             </thead>
-            <tbody id="routine-body">
+            <tbody>
                 <tr>
                     <td class="time-col">06:00 - 07:00</td>
                     <td rowspan="2" data-t="06:00-09:00">Dormir</td>
@@ -71,21 +70,20 @@
                 <tr>
                     <td class="time-col">09:00 - 10:00</td>
                     <td rowspan="3" data-t="09:00-11:45">Café + Org. Terapia + Cativar</td>
-                    <td data-t="09:00-10:00">Café + Org. Terapia</td>
+                    <td rowspan="2" data-t="09:00-11:00">Café da Manhã + Organização pra Terapia</td>
                     <td rowspan="3" data-t="09:00-11:45">Faxina + Org. Terapia + Cativar</td>
                 </tr>
                 <tr>
                     <td class="time-col">10:00 - 11:00</td>
-                    <td rowspan="2" data-t="10:00-11:45">Preparo do Almoço</td>
                 </tr>
                 <tr>
                     <td class="time-col">11:00 - 11:45</td>
+                    <td rowspan="2" data-t="11:00-13:00">Preparo do Almoço</td>
                 </tr>
                 <tr>
                     <td class="time-col">11:45 - 13:00</td>
                     <td data-t="11:45-13:00">Org. pra Escola</td>
                     <td data-t="11:45-13:00">Cuidados com as Irmãs</td>
-                    <td rowspan="2" data-t="11:45-14:00">Almoço + Translado</td>
                     <td data-t="11:45-13:00">Translado CMT + Org. Escola</td>
                 </tr>
                 <tr>
@@ -93,53 +91,55 @@
                     <td data-t="13:00-14:00">Almoço + Translado</td>
                     <td data-t="13:00-14:00">Almoço + Descanso</td>
                     <td data-t="13:00-14:00">Almoço + Translado</td>
+                    <td data-t="13:00-14:00">Almoço + Translado</td>
                 </tr>
                 <tr>
                     <td class="time-col">14:00 - 16:45</td>
                     <td data-t="14:00-16:45">Escola</td>
-                    <td data-t="14:00-16:45">Momento Livre + Estudo</td>
-                    <td data-t="14:00-16:45">UNINASSAU</td>
-                    <td data-t="14:00-16:45">IFMA</td>
+                    <td data-t="14:00-16:45">Organização da Cozinha + Momento Livre + Estudo</td>
+                    <td data-t="14:00-16:45">UNINASSAU + Descanso</td>
+                    <td data-t="14:00-16:45">IFMA + Descanso</td>
                 </tr>
                 <tr>
                     <td class="time-col">16:45 - 18:00</td>
                     <td rowspan="2" data-t="16:45-19:00">Translado + Celular</td>
                     <td data-t="16:45-18:00">Telas</td>
-                    <td data-t="16:45-18:00">Descanso</td>
-                    <td data-t="16:45-18:00">Descanso</td>
+                    <td data-t="16:45-18:00">Translado Escolar</td>
+                    <td data-t="16:45-18:00">Translado Escolar</td>
                 </tr>
                 <tr>
                     <td class="time-col">18:00 - 19:00</td>
                     <td data-t="18:00-19:00">Higiene Pessoal</td>
-                    <td data-t="18:00-19:00">Translado Escolar</td>
-                    <td data-t="18:00-19:00">Translado Escolar</td>
+                    <td rowspan="2" data-t="18:00-20:00">Preparo do Jantar</td>
+                    <td rowspan="2" data-t="18:00-20:00">Supervisão das Crianças</td>
                 </tr>
                 <tr>
                     <td class="time-col">19:00 - 20:00</td>
                     <td data-t="19:00-20:00">TV</td>
                     <td data-t="19:00-20:00">Leitura</td>
-                    <td data-t="19:00-20:00">Preparo do Jantar</td>
-                    <td data-t="19:00-20:00">Supervisão das Crianças</td>
                 </tr>
                 <tr>
                     <td class="time-col">20:00 - 21:00</td>
                     <td data-t="20:00-21:00">Jantar</td>
-                    <td rowspan="2" data-t="20:00-22:00">Jantar + Ritual do Sono</td>
+                    <td rowspan="3" data-t="20:00-23:00">Jantar + Organização da Cozinha + Ritual do Sono</td>
                     <td data-t="20:00-21:00">Jantar</td>
                     <td data-t="20:00-21:00">Jantar</td>
                 </tr>
                 <tr>
                     <td class="time-col">21:00 - 22:00</td>
                     <td data-t="21:00-22:00">Ritual de Sono</td>
-                    <td data-t="21:00-22:00">Faxina + Novela</td>
-                    <td data-t="21:00-22:00">Supervisão das Crianças</td>
+                    <td rowspan="2" data-t="21:00-23:00">Faxina + Novela</td>
+                    <td rowspan="2" data-t="21:00-23:00">Supervisão das Crianças</td>
                 </tr>
                 <tr>
-                    <td class="time-col">22:00 - 06:00</td>
-                    <td data-t="22:00-06:00">Dormir</td>
-                    <td data-t="22:00-06:00">Dormir</td>
-                    <td data-t="22:00-06:00">BBB / Dormir</td>
-                    <td data-t="22:00-06:00">BBB / Dormir</td>
+                    <td class="time-col">22:00 - 23:00</td>
+                    <td rowspan="2" data-t="22:00-06:00">Dormir</td>
+                </tr>
+                <tr>
+                    <td class="time-col">23:00 - 06:00</td>
+                    <td data-t="23:00-06:00">Dormir</td>
+                    <td data-t="23:00-06:00">BBB / Dormir</td>
+                    <td data-t="23:00-06:00">BBB / Dormir</td>
                 </tr>
             </tbody>
         </table>
@@ -166,21 +166,16 @@
         const s = n.getSeconds();
         const nowM = h * 60 + m;
 
-        // Atualiza Relógios
         document.getElementById('digital').innerText = `${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
         document.getElementById('as').style.transform = `translateX(-50%) rotate(${s * 6}deg)`;
         document.getElementById('am').style.transform = `translateX(-50%) rotate(${m * 6}deg)`;
         document.getElementById('ah').style.transform = `translateX(-50%) rotate(${(h % 12) * 30 + m * 0.5}deg)`;
 
-        // Destaque de Tarefas
         document.querySelectorAll('td[data-t]').forEach(c => {
             const [sStr, eStr] = c.dataset.t.split('-');
             let start = toM(sStr), end = toM(eStr);
             if (end === 0) end = 1440;
-            
-            // Lógica para horários que atravessam a meia-noite
             let active = (start < end) ? (nowM >= start && nowM < end) : (nowM >= start || nowM < end);
-            
             if (active) c.classList.add('active-task'); else c.classList.remove('active-task');
         });
     }
