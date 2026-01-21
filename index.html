@@ -2,7 +2,7 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Rotina Familiar Pro</title>
+    <title>Rotina Familiar Pro - Estável</title>
     <style>
         :root {
             --bg: #050505;
@@ -22,18 +22,49 @@
             overflow: hidden;
         }
 
-        /* Layout Principal */
         #master-wrapper {
             display: flex;
             width: 100%;
             height: 100%;
-            padding: 5px;
+            padding: 10px;
             box-sizing: border-box;
+            transition: transform 0.5s ease-in-out;
         }
 
+        /* Painel Esquerdo - Tabela Fixa */
         .left-panel { flex: 2; display: flex; flex-direction: column; }
-        .right-panel { 
-            flex: 1; 
+
+        table {
+            width: 100%;
+            height: 100%;
+            border-collapse: collapse;
+            table-layout: fixed;
+            font-size: clamp(10px, 1.2vh, 13px);
+        }
+
+        th, td {
+            border: 1px solid var(--border);
+            text-align: center;
+            padding: 2px;
+            background: #080808;
+        }
+
+        th { background: #151515; color: white; height: 35px; }
+        .time-col { width: 90px; font-weight: bold; color: #666; }
+
+        /* Estilo de Destaque Individual */
+        .active-task {
+            background-color: var(--highlight) !important;
+            color: var(--accent) !important;
+            font-weight: bold;
+            animation: pulse 2s infinite ease-in-out;
+        }
+
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.7; } }
+
+        /* Painel Direito - Relógios */
+        .right-panel {
+            flex: 1;
             border-left: 1px solid var(--border);
             display: flex;
             flex-direction: column;
@@ -41,202 +72,165 @@
             align-items: center;
         }
 
-        /* Grid da Rotina */
-        .routine-grid {
-            display: grid;
-            grid-template-columns: 100px repeat(4, 1fr);
-            grid-template-rows: 30px repeat(16, 1fr); /* Cabeçalho + 16 blocos */
-            height: 100%;
-            border: 1px solid var(--border);
-        }
-
-        .grid-item {
-            border: 0.5px solid var(--border);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 2px;
-            font-size: 11px;
-            background: #080808;
-        }
-
-        .header { background: #151515; color: white; font-weight: bold; font-size: 13px; }
-        .time-label { background: #0d0d0d; font-weight: bold; color: #666; }
-
-        /* Destaque Individual */
-        .active-task {
-            background-color: var(--highlight) !important;
-            color: var(--accent) !important;
-            font-weight: bold;
-            box-shadow: inset 0 0 10px rgba(0, 255, 65, 0.2);
-            animation: pulse 2s infinite ease-in-out;
-        }
-
-        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.7; } }
-
-        /* Relógios */
-        #digital { font-size: 4.5vw; font-family: monospace; color: var(--accent); }
+        #digital { font-size: 5vw; font-family: monospace; color: var(--accent); }
+        
         #analog {
-            width: 220px; height: 220px;
+            width: 250px; height: 250px;
             border: 4px solid #333; border-radius: 50%;
             position: relative;
         }
+
         .hand {
             position: absolute; bottom: 50%; left: 50%;
             transform-origin: bottom; background: #888;
             transform: translateX(-50%);
         }
-        .h { width: 6px; height: 25%; }
-        .m { width: 4px; height: 40%; }
-        .s { width: 2px; height: 45%; background: #ff4500; }
+        .h { width: 6px; height: 25%; z-index: 3; }
+        .m { width: 4px; height: 40%; z-index: 2; }
+        .s { width: 2px; height: 45%; background: #ff4500; z-index: 1; }
+        
+        .pin {
+            position: absolute; top: 50%; left: 50%;
+            width: 10px; height: 10px; background: white;
+            border-radius: 50%; transform: translate(-50%, -50%); z-index: 4;
+        }
     </style>
 </head>
 <body>
 
 <div id="master-wrapper">
     <div class="left-panel">
-        <div class="routine-grid" id="grid">
-            <div class="grid-item header">Horário</div>
-            <div class="grid-item header">Babies</div>
-            <div class="grid-item header">Cavalo</div>
-            <div class="grid-item header">Mamãe</div>
-            <div class="grid-item header">Papai</div>
-
-            </div>
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 15%;">Horário</th>
+                    <th>Babies</th>
+                    <th>Cavalo</th>
+                    <th>Mamãe</th>
+                    <th>Papai</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="time-col">06:00 - 07:00</td>
+                    <td rowspan="3" data-t="06:00-10:00">Dormir</td>
+                    <td data-t="06:00-07:00">Organização Pessoal</td>
+                    <td rowspan="3" data-t="06:00-10:00">Dormir</td>
+                    <td data-t="06:00-07:00">Preparo Café da Manhã</td>
+                </tr>
+                <tr>
+                    <td class="time-col">07:00 - 09:00</td>
+                    <td rowspan="4" data-t="07:00-12:15">CMT</td>
+                    <td data-t="07:00-09:00">Translado CMT + Café</td>
+                </tr>
+                <tr>
+                    <td class="time-col">09:00 - 10:00</td>
+                    <td data-t="09:00-10:00">Faxina</td>
+                </tr>
+                <tr>
+                    <td class="time-col">10:00 - 11:00</td>
+                    <td rowspan="2" data-t="10:00-12:15">Café + Org. Terapia + Espaço Cativar</td>
+                    <td rowspan="2" data-t="10:00-12:15">Café + Org. Terapia</td>
+                    <td data-t="10:00-11:00">Org. Terapia + Espaço Cativar</td>
+                </tr>
+                <tr>
+                    <td class="time-col">11:00 - 12:15</td>
+                    <td data-t="11:00-12:15">Preparo do Almoço</td>
+                </tr>
+                <tr>
+                    <td class="time-col">12:15 - 13:00</td>
+                    <td data-t="12:15-13:00">Org. Escola</td>
+                    <td data-t="12:15-13:00">Cuidado com Irmãs</td>
+                    <td rowspan="2" data-t="12:15-14:00">Almoço + Translado</td>
+                    <td data-t="12:15-13:00">Translado + Org. Escola</td>
+                </tr>
+                <tr>
+                    <td class="time-col">13:00 - 14:00</td>
+                    <td data-t="13:00-14:00">Almoço + Translado</td>
+                    <td data-t="13:00-14:00">Almoço + Descanso</td>
+                    <td data-t="13:00-14:00">Almoço + Translado</td>
+                </tr>
+                <tr>
+                    <td class="time-col">14:00 - 16:45</td>
+                    <td data-t="14:00-16:45">Escola</td>
+                    <td data-t="14:00-16:45">Org. Cozinha + Estudo</td>
+                    <td data-t="14:00-16:45">UNINASSAU</td>
+                    <td data-t="14:00-16:45">IFMA</td>
+                </tr>
+                <tr>
+                    <td class="time-col">16:45 - 18:00</td>
+                    <td rowspan="2" data-t="16:45-19:00">Translado + Celular</td>
+                    <td data-t="16:45-18:00">Telas</td>
+                    <td rowspan="2" data-t="16:45-19:00">Translado Escolar</td>
+                    <td rowspan="2" data-t="16:45-19:00">Translado Escolar</td>
+                </tr>
+                <tr>
+                    <td class="time-col">18:00 - 19:00</td>
+                    <td data-t="18:00-19:00">Higiene Pessoal</td>
+                </tr>
+                <tr>
+                    <td class="time-col">19:00 - 20:00</td>
+                    <td data-t="19:00-20:00">TV</td>
+                    <td data-t="19:00-20:00">Leitura</td>
+                    <td data-t="19:00-20:00">Preparo do Jantar</td>
+                    <td data-t="19:00-20:00">Supervisão Crianças</td>
+                </tr>
+                <tr>
+                    <td class="time-col">20:00 - 21:00</td>
+                    <td data-t="20:00-21:00">Jantar</td>
+                    <td rowspan="2" data-t="20:00-22:00">Jantar + Org. Cozinha + Ritual</td>
+                    <td data-t="20:00-21:00">Jantar</td>
+                    <td data-t="20:00-21:00">Jantar</td>
+                </tr>
+                <tr>
+                    <td class="time-col">21:00 - 22:00</td>
+                    <td data-t="21:00-22:00">Ritual de Sono</td>
+                    <td data-t="21:00-22:00">Faxina + Novela</td>
+                    <td data-t="21:00-22:00">Supervisão Crianças</td>
+                </tr>
+                <tr>
+                    <td class="time-col">22:00 - 23:00</td>
+                    <td rowspan="3" data-t="22:00-06:00">Dormir</td>
+                    <td rowspan="3" data-t="22:00-06:00">Dormir</td>
+                    <td rowspan="2" data-t="22:00-00:00">BBB</td>
+                    <td rowspan="2" data-t="22:00-00:00">BBB</td>
+                </tr>
+                <tr>
+                    <td class="time-col">23:00 - 00:00</td>
+                </tr>
+                <tr>
+                    <td class="time-col">00:00 - 06:00</td>
+                    <td data-t="00:00-06:00">Dormir</td>
+                    <td data-t="00:00-06:00">Dormir</td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 
     <div class="right-panel">
         <div id="digital">00:00:00</div>
         <div id="analog">
-            <div class="hand h" id="ah"></div>
-            <div class="hand m" id="am"></div>
-            <div class="hand s" id="as"></div>
-            <div style="position:absolute; top:50%; left:50%; width:10px; height:10px; background:white; border-radius:50%; transform:translate(-50%,-50%)"></div>
+            <div class="pin"></div>
+            <div id="ah" class="hand h"></div>
+            <div id="am" class="hand m"></div>
+            <div id="as" class="hand s"></div>
         </div>
     </div>
 </div>
 
 <script>
-    // Definição exata da planilha (em minutos desde as 00:00)
-    const schedule = [
-        // Babies
-        { col: 2, start: 360, end: 600, text: "Dormir" },
-        { col: 2, start: 600, end: 735, text: "Café + Org. Terapia + Espaço Cativar" },
-        { col: 2, start: 735, end: 780, text: "Org. Escola" },
-        { col: 2, start: 780, end: 840, text: "Almoço + Translado" },
-        { col: 2, start: 840, end: 1005, text: "Escola" },
-        { col: 2, start: 1005, end: 1140, text: "Translado + Celular" },
-        { col: 2, start: 1140, end: 1200, text: "TV" },
-        { col: 2, start: 1200, end: 1260, text: "Jantar" },
-        { col: 2, start: 1260, end: 1320, text: "Ritual de Sono" },
-        { col: 2, start: 1320, end: 1440, text: "Dormir" },
-        { col: 2, start: 0, end: 360, text: "Dormir" },
-
-        // Cavalo
-        { col: 3, start: 360, end: 420, text: "Organização Pessoal" },
-        { col: 3, start: 420, end: 735, text: "CMT" },
-        { col: 3, start: 735, end: 780, text: "Cuidado com Irmãs" },
-        { col: 3, start: 780, end: 840, text: "Almoço + Descanso" },
-        { col: 3, start: 840, end: 1005, text: "Org. Cozinha + Estudo" },
-        { col: 3, start: 1005, end: 1080, text: "Telas" },
-        { col: 3, start: 1080, end: 1140, text: "Higiene Pessoal" },
-        { col: 3, start: 1140, end: 1200, text: "Leitura" },
-        { col: 3, start: 1200, end: 1320, text: "Jantar + Org. Cozinha + Ritual" },
-        { col: 3, start: 1320, end: 1440, text: "Dormir" },
-        { col: 3, start: 0, end: 360, text: "Dormir" },
-
-        // Mamãe
-        { col: 4, start: 360, end: 600, text: "Dormir" },
-        { col: 4, start: 600, end: 660, text: "Café + Org. Terapia" },
-        { col: 4, start: 660, end: 735, text: "Preparo do Almoço" },
-        { col: 4, start: 735, end: 840, text: "Almoço + Translado" },
-        { col: 4, start: 840, end: 1005, text: "UNINASSAU" },
-        { col: 4, start: 1005, end: 1080, text: "Descanso" },
-        { col: 4, start: 1080, end: 1140, text: "Translado Escolar" },
-        { col: 4, start: 1140, end: 1200, text: "Preparo do Jantar" },
-        { col: 4, start: 1200, end: 1260, text: "Jantar" },
-        { col: 4, start: 1260, end: 1320, text: "Faxina + Novela" },
-        { col: 4, start: 1320, end: 1440, text: "BBB" },
-        { col: 4, start: 0, end: 360, text: "Dormir" },
-
-        // Papai
-        { col: 5, start: 360, end: 420, text: "Preparo Café" },
-        { col: 5, start: 420, end: 540, text: "Translado CMT + Café" },
-        { col: 5, start: 540, end: 600, text: "Faxina" },
-        { col: 5, start: 600, end: 660, text: "Org. Terapia + Cativar" },
-        { col: 5, start: 660, end: 735, text: "Cativar" },
-        { col: 5, start: 735, end: 780, text: "Translado + Org. Escola" },
-        { col: 5, start: 780, end: 840, text: "Almoço + Translado" },
-        { col: 5, start: 840, end: 1005, text: "IFMA" },
-        { col: 5, start: 1005, end: 1080, text: "Descanso" },
-        { col: 5, start: 1080, end: 1140, text: "Translado Escolar" },
-        { col: 5, start: 1140, end: 1200, text: "Supervisão Crianças" },
-        { col: 5, start: 1200, end: 1260, text: "Jantar" },
-        { col: 5, start: 1260, end: 1320, text: "Supervisão Crianças" },
-        { col: 5, start: 1320, end: 1440, text: "BBB" },
-        { col: 5, start: 0, end: 360, text: "Dormir" }
-    ];
-
-    const timeBlocks = [
-        "06:00-07:00", "07:00-09:00", "09:00-10:00", "10:00-11:00", "11:00-12:15",
-        "12:15-13:00", "13:00-14:00", "14:00-16:45", "16:45-18:00", "18:00-19:00",
-        "19:00-20:00", "20:00-21:00", "21:00-22:00", "22:00-23:00", "23:00-00:00", "00:00-06:00"
-    ];
-
-    function initGrid() {
-        const grid = document.getElementById('grid');
-        
-        // Criar colunas de horário
-        timeBlocks.forEach((t, i) => {
-            const div = document.createElement('div');
-            div.className = 'grid-item time-label';
-            div.style.gridRow = i + 2;
-            div.style.gridColumn = 1;
-            div.innerText = t;
-            grid.appendChild(div);
-        });
-
-        // Criar tarefas (Usando Grid Area para simular Rowspan de forma fixa)
-        schedule.forEach(item => {
-            const div = document.createElement('div');
-            div.className = 'grid-item task-cell';
-            div.innerText = item.text;
-            div.dataset.start = item.start;
-            div.dataset.end = item.end;
-            
-            // Mapeia o horário para a linha do Grid
-            const rowIndex = timeBlocks.findIndex(b => b.startsWith(
-                Math.floor(item.start/60).toString().padStart(2, '0') + ":" + 
-                (item.start%60).toString().padStart(2, '0')
-            ));
-            
-            // Calcula quantas linhas o item ocupa
-            const rowStart = rowIndex + 2;
-            let rowSpan = 1;
-            if (item.text === "Dormir" && item.start === 360) rowSpan = 3;
-            if (item.text === "CMT") rowSpan = 4;
-            if (item.text === "Almoço + Translado" && item.col === 4) rowSpan = 2;
-            // ... (adicionar outros spans específicos se necessário, mas o Grid aceita sobreposição)
-
-            div.style.gridColumn = item.col;
-            div.style.gridRow = `${rowStart} / span ${rowSpan || 1}`;
-            
-            grid.appendChild(div);
-        });
+    function toMins(s) {
+        const [h, m] = s.split(':').map(Number);
+        return h * 60 + m;
     }
 
-    function tick() {
+    function update() {
         const now = new Date();
         const h = now.getHours();
         const m = now.getMinutes();
         const s = now.getSeconds();
-        const total = h * 60 + m;
+        const cur = h * 60 + m;
 
         // Digital
         document.getElementById('digital').innerText = 
-            `${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
-
-        // Analógico
-        document.getElementById('as').style.transform = `translateX(-50%) rotate(${s*6}deg)`;
-        document.getElementById('am').style.transform = `translateX(-50%) rotate(${m*6}
+            `${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}:${s.toString().padStart(2
