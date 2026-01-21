@@ -33,7 +33,6 @@
 
         .active-task { background-color: var(--highlight) !important; color: var(--accent) !important; font-weight: bold; }
 
-        /* Estilo do Novo Quadro Dinâmico */
         #dynamic-status {
             width: 80%;
             height: 100px;
@@ -45,7 +44,8 @@
             text-align: center;
             background: #101010;
         }
-        #status-name { font-size: 1.2vw; color: var(--text); text-transform: uppercase; margin-bottom: 5px; }
+        /* Nomes em Branco e Negrito conforme solicitado */
+        #status-name { font-size: 1.2vw; color: #FFFFFF; font-weight: bold; text-transform: uppercase; margin-bottom: 5px; }
         #status-task { font-size: 1.8vw; color: var(--accent); font-weight: bold; }
 
         #digital { font-size: 5vw; font-family: 'Consolas', monospace; color: var(--accent); }
@@ -59,7 +59,7 @@
 
 <div id="master-wrapper">
     <div class="left-panel">
-        <table>
+        <table id="routine-table">
             <thead>
                 <tr>
                     <th>Horário</th>
@@ -178,7 +178,6 @@
 <script>
     function toM(s) { const [h, m] = s.split(':').map(Number); return h * 60 + m; }
 
-    let cycleIndex = 0;
     const names = ["Babies", "Cavalo", "Mamãe", "Papai"];
 
     function update() {
@@ -193,31 +192,83 @@
         document.getElementById('am').style.transform = `translateX(-50%) rotate(${m * 6}deg)`;
         document.getElementById('ah').style.transform = `translateX(-50%) rotate(${(h % 12) * 30 + m * 0.5}deg)`;
 
-        let currentActiveTasks = {};
+        let activeData = { "Babies": "---", "Cavalo": "---", "Mamãe": "---", "Papai": "---" };
 
-        document.querySelectorAll('td[data-t]').forEach(c => {
-            const [sStr, eStr] = c.dataset.t.split('-');
-            let start = toM(sStr), end = toM(eStr);
-            if (end === 0) end = 1440;
-            let active = (start < end) ? (nowM >= start && nowM < end) : (nowM >= start || nowM < end);
-            
-            if (active) {
-                c.classList.add('active-task');
-                // Mapeia qual tarefa pertence a qual coluna
-                const colIndex = c.cellIndex - (c.rowSpan > 1 || c.parentElement.cells.length < 5 ? 0 : 0); 
-                // Para garantir precisão, pegamos o nome da coluna pelo th
-                const headerName = document.querySelector(`th:nth-child(${c.cellIndex + 1})`)?.innerText;
-                if(headerName) currentActiveTasks[headerName] = c.innerText;
-            } else {
-                c.classList.remove('active-task');
-            }
+        // Lógica de Varredura Segura: ignora cellIndex e usa a estrutura lógica da tabela
+        const rows = document.querySelectorAll('#routine-table tbody tr');
+        rows.forEach(row => {
+            const cells = row.querySelectorAll('td[data-t]');
+            cells.forEach(cell => {
+                const [sStr, eStr] = cell.dataset.t.split('-');
+                let start = toM(sStr), end = toM(eStr);
+                if (end === 0) end = 1440;
+                let active = (start < end) ? (nowM >= start && nowM < end) : (nowM >= start || nowM < end);
+
+                if (active) {
+                    cell.classList.add('active-task');
+                    
+                    // Identificação manual da coluna para evitar erro de rowspan
+                    // Verifica em qual coluna a célula "deveria" estar
+                    let tempIdx = cell.cellIndex;
+                    // Se for a primeira linha da rotina, o index bate com o Header
+                    // Mas como há rowspans, mapeamos pelo texto ou posição visual
+                    // A solução mais robusta é checar o Header pai baseado no alinhamento visual:
+                    const headers = ["Horário", "Babies", "Cavalo", "Mamãe", "Papai"];
+                    
+                    // Gambiarra técnica necessária: Como cellIndex falha com rowspan, 
+                    // buscamos a tarefa ativa que coincide com o tempo ATUAL e extraímos para o painel.
+                    // Varremos cada coluna individualmente:
+                } else {
+                    cell.classList.remove('active-task');
+                }
+            });
         });
 
-        // Alternância do quadro dinâmico a cada 3 segundos (baseado nos segundos do relógio)
-        cycleIndex = Math.floor(s / 3) % 4;
+        // Nova Varredura por coluna (Garante que Babies nunca pegue tarefa do Papai)
+        names.forEach((name, idx) => {
+            const colIdx = idx + 1; // 1=Babies, 2=Cavalo, etc.
+            const allPossibleCells = document.querySelectorAll(`#routine-table td:nth-child(n)`);
+            
+            // Filtramos apenas as células que estão marcadas como active-task e pertencem à lógica daquela pessoa
+            document.querySelectorAll('.active-task').forEach(ac => {
+                // Se a célula contém um data-t e está ativa, verificamos a qual "dono" ela pertence
+                // baseado na posição dela no HTML original ou texto
+                names.forEach(n => {
+                    const cellName = getOwner(ac);
+                    if(cellName) activeData[cellName] = ac.innerText;
+                });
+            });
+        });
+
+        const cycleIndex = Math.floor(s / 3) % 4;
         const currentName = names[cycleIndex];
         document.getElementById('status-name').innerText = currentName;
-        document.getElementById('status-task').innerText = currentActiveTasks[currentName] || "---";
+        document.getElementById('status-task').innerText = activeData[currentName];
+    }
+
+    // Função auxiliar para identificar o dono da célula sem depender do cellIndex instável
+    function getOwner(cell) {
+        const row = cell.parentElement;
+        const allCells = Array.from(row.children);
+        const cellIdx = allCells.indexOf(cell);
+        
+        // Mapeamento fixo baseado na sua estrutura de tabela específica
+        // Se a linha tem 5 células, é direto. Se tem menos, compensamos o rowspan anterior.
+        if (allCells.length === 5) {
+            return names[cellIdx - 1];
+        } else {
+            // Se a linha tem menos de 5, ela começou com um rowspan. 
+            // Verificamos o conteúdo para decidir o dono
+            const txt = cell.innerText;
+            if (txt.includes("CMT") || txt.includes("Telas") || txt.includes("Cozinha")) return "Cavalo";
+            if (txt.includes("Dormir") && cell.dataset.t === "06:00-09:00") return "Mamãe"; // Caso específico da manhã
+            if (txt.includes("Ritual") || txt.includes("Higiene")) return "Babies";
+            if (txt.includes("Faxina") || txt.includes("Novela") || txt.includes("UNINASSAU")) return "Mamãe";
+            if (txt.includes("Supervisão") || txt.includes("IFMA") || txt.includes("Faxina")) return "Papai";
+            
+            // Fallback por eliminação lógica simples
+            return null; 
+        }
     }
 
     setInterval(update, 1000);
