@@ -34,8 +34,8 @@
         .active-task { background-color: var(--highlight) !important; color: var(--accent) !important; font-weight: bold; }
 
         #dynamic-status {
-            width: 80%;
-            height: 100px;
+            width: 85%;
+            height: 120px;
             border: 2px solid var(--accent);
             display: flex;
             flex-direction: column;
@@ -44,9 +44,8 @@
             text-align: center;
             background: #101010;
         }
-        /* Nomes em Branco e Negrito conforme solicitado */
-        #status-name { font-size: 1.2vw; color: #FFFFFF; font-weight: bold; text-transform: uppercase; margin-bottom: 5px; }
-        #status-task { font-size: 1.8vw; color: var(--accent); font-weight: bold; }
+        #status-name { font-size: 1.4vw; color: #FFFFFF; font-weight: bold; text-transform: uppercase; margin-bottom: 8px; }
+        #status-task { font-size: 1.8vw; color: var(--accent); font-weight: bold; padding: 0 10px; }
 
         #digital { font-size: 5vw; font-family: 'Consolas', monospace; color: var(--accent); }
         #analog { width: min(250px, 28vh); height: min(250px, 28vh); border: 4px solid #333; border-radius: 50%; position: relative; }
@@ -59,7 +58,7 @@
 
 <div id="master-wrapper">
     <div class="left-panel">
-        <table id="routine-table">
+        <table>
             <thead>
                 <tr>
                     <th>Horário</th>
@@ -72,89 +71,89 @@
             <tbody>
                 <tr>
                     <td class="time-col">06:00 - 07:00</td>
-                    <td rowspan="2" data-t="06:00-09:00">Dormir</td>
-                    <td data-t="06:00-07:00">Org. Pessoal</td>
-                    <td rowspan="2" data-t="06:00-09:00">Dormir</td>
-                    <td data-t="06:00-07:00">Preparo Café da Manhã</td>
+                    <td rowspan="2" data-t="06:00-09:00" data-p="Babies">Dormir</td>
+                    <td data-t="06:00-07:00" data-p="Cavalo">Org. Pessoal</td>
+                    <td rowspan="2" data-t="06:00-09:00" data-p="Mamãe">Dormir</td>
+                    <td data-t="06:00-07:00" data-p="Papai">Preparo Café da Manhã</td>
                 </tr>
                 <tr>
                     <td class="time-col">07:00 - 09:00</td>
-                    <td rowspan="4" data-t="07:00-11:45">CMT</td>
-                    <td data-t="07:00-09:00">Ida CMT + Café da Manhã</td>
+                    <td rowspan="4" data-t="07:00-11:45" data-p="Cavalo">CMT</td>
+                    <td data-t="07:00-09:00" data-p="Papai">Ida CMT + Café da Manhã</td>
                 </tr>
                 <tr>
                     <td class="time-col">09:00 - 10:00</td>
-                    <td rowspan="3" data-t="09:00-11:45">Café + Org. Terapia + Cativar</td>
-                    <td rowspan="2" data-t="09:00-11:00">Café da Manhã + Org. pra Terapia</td>
-                    <td rowspan="3" data-t="09:00-11:45">Org. Terapia + Ida Cativar + Faxina</td>
+                    <td rowspan="3" data-t="09:00-11:45" data-p="Babies">Café + Org. Terapia + Cativar</td>
+                    <td rowspan="2" data-t="09:00-11:00" data-p="Mamãe">Café da Manhã + Org. pra Terapia</td>
+                    <td rowspan="3" data-t="09:00-11:45" data-p="Papai">Org. Terapia + Ida Cativar + Faxina</td>
                 </tr>
                 <tr>
                     <td class="time-col">10:00 - 11:00</td>
                 </tr>
                 <tr>
                     <td class="time-col">11:00 - 11:45</td>
-                    <td rowspan="2" data-t="11:00-13:00">Preparo do Almoço</td>
+                    <td rowspan="2" data-t="11:00-13:00" data-p="Mamãe">Preparo do Almoço</td>
                 </tr>
                 <tr>
                     <td class="time-col">11:45 - 13:00</td>
-                    <td data-t="11:45-13:00">Org. pra Escola</td>
-                    <td data-t="11:45-13:00">Cuidados com as Irmãs</td>
-                    <td data-t="11:45-13:00">Volta Cativar/CMT + Org. Escola</td>
+                    <td data-t="11:45-13:00" data-p="Babies">Org. pra Escola</td>
+                    <td data-t="11:45-13:00" data-p="Cavalo">Cuidados com as Irmãs</td>
+                    <td data-t="11:45-13:00" data-p="Papai">Volta Cativar/CMT + Org. Escola</td>
                 </tr>
                 <tr>
                     <td class="time-col">13:00 - 14:00</td>
-                    <td data-t="13:00-14:00">Almoço + Ida Escola</td>
-                    <td data-t="13:00-14:00">Almoço + Descanso</td>
-                    <td data-t="13:00-14:00">Almoço + Ida Escola</td>
-                    <td data-t="13:00-14:00">Almoço + Ida Escola</td>
+                    <td data-t="13:00-14:00" data-p="Babies">Almoço + Ida Escola</td>
+                    <td data-t="13:00-14:00" data-p="Cavalo">Almoço + Descanso</td>
+                    <td data-t="13:00-14:00" data-p="Mamãe">Almoço + Ida Escola</td>
+                    <td data-t="13:00-14:00" data-p="Papai">Almoço + Ida Escola</td>
                 </tr>
                 <tr>
                     <td class="time-col">14:00 - 16:45</td>
-                    <td data-t="14:00-16:45">Escola</td>
-                    <td data-t="14:00-16:45">Org. da Cozinha + Momento Livre + Estudo</td>
-                    <td data-t="14:00-16:45">UNINASSAU + Descanso</td>
-                    <td data-t="14:00-16:45">IFMA + Descanso</td>
+                    <td data-t="14:00-16:45" data-p="Babies">Escola</td>
+                    <td data-t="14:00-16:45" data-p="Cavalo">Org. da Cozinha + Momento Livre + Estudo</td>
+                    <td data-t="14:00-16:45" data-p="Mamãe">UNINASSAU + Descanso</td>
+                    <td data-t="14:00-16:45" data-p="Papai">IFMA + Descanso</td>
                 </tr>
                 <tr>
                     <td class="time-col">16:45 - 18:00</td>
-                    <td rowspan="2" data-t="16:45-19:00">Volta Escola + Celular</td>
-                    <td data-t="16:45-18:00">Telas</td>
-                    <td data-t="16:45-18:00">Volta Escola</td>
-                    <td data-t="16:45-18:00">Volta Escola</td>
+                    <td rowspan="2" data-t="16:45-19:00" data-p="Babies">Volta Escola + Celular</td>
+                    <td data-t="16:45-18:00" data-p="Cavalo">Telas</td>
+                    <td data-t="16:45-18:00" data-p="Mamãe">Volta Escola</td>
+                    <td data-t="16:45-18:00" data-p="Papai">Volta Escola</td>
                 </tr>
                 <tr>
                     <td class="time-col">18:00 - 19:00</td>
-                    <td data-t="18:00-19:00">Higiene Pessoal</td>
-                    <td rowspan="2" data-t="18:00-20:00">Preparo do Jantar</td>
-                    <td rowspan="2" data-t="18:00-20:00">Supervisão das Crianças</td>
+                    <td data-t="18:00-19:00" data-p="Cavalo">Higiene Pessoal</td>
+                    <td rowspan="2" data-t="18:00-20:00" data-p="Mamãe">Preparo do Jantar</td>
+                    <td rowspan="2" data-t="18:00-20:00" data-p="Papai">Supervisão das Crianças</td>
                 </tr>
                 <tr>
                     <td class="time-col">19:00 - 20:00</td>
-                    <td data-t="19:00-20:00">TV</td>
-                    <td data-t="19:00-20:00">Leitura</td>
+                    <td data-t="19:00-20:00" data-p="Babies">TV</td>
+                    <td data-t="19:00-20:00" data-p="Cavalo">Leitura</td>
                 </tr>
                 <tr>
                     <td class="time-col">20:00 - 21:00</td>
-                    <td data-t="20:00-21:00">Jantar</td>
-                    <td rowspan="3" data-t="20:00-23:00">Jantar + Org. da Cozinha + Ritual do Sono</td>
-                    <td data-t="20:00-21:00">Jantar</td>
-                    <td data-t="20:00-21:00">Jantar</td>
+                    <td data-t="20:00-21:00" data-p="Babies">Jantar</td>
+                    <td rowspan="3" data-t="20:00-23:00" data-p="Cavalo">Jantar + Org. da Cozinha + Ritual do Sono</td>
+                    <td data-t="20:00-21:00" data-p="Mamãe">Jantar</td>
+                    <td data-t="20:00-21:00" data-p="Papai">Jantar</td>
                 </tr>
                 <tr>
                     <td class="time-col">21:00 - 22:00</td>
-                    <td data-t="21:00-22:00">Ritual de Sono</td>
-                    <td rowspan="2" data-t="21:00-23:00">Faxina + Novela</td>
-                    <td rowspan="2" data-t="21:00-23:00">Supervisão das Crianças</td>
+                    <td data-t="21:00-22:00" data-p="Babies">Ritual de Sono</td>
+                    <td rowspan="2" data-t="21:00-23:00" data-p="Mamãe">Faxina + Novela</td>
+                    <td rowspan="2" data-t="21:00-23:00" data-p="Papai">Supervisão das Crianças</td>
                 </tr>
                 <tr>
                     <td class="time-col">22:00 - 23:00</td>
-                    <td rowspan="2" data-t="22:00-06:00">Dormir</td>
+                    <td rowspan="2" data-t="22:00-06:00" data-p="Babies">Dormir</td>
                 </tr>
                 <tr>
                     <td class="time-col">23:00 - 06:00</td>
-                    <td data-t="23:00-06:00">Dormir</td>
-                    <td data-t="23:00-06:00">BBB / Dormir</td>
-                    <td data-t="23:00-06:00">BBB / Dormir</td>
+                    <td data-t="23:00-06:00" data-p="Cavalo">Dormir</td>
+                    <td data-t="23:00-06:00" data-p="Mamãe">BBB / Dormir</td>
+                    <td data-t="23:00-06:00" data-p="Papai">BBB / Dormir</td>
                 </tr>
             </tbody>
         </table>
@@ -187,88 +186,35 @@
         const s = n.getSeconds();
         const nowM = h * 60 + m;
 
+        // Relógios
         document.getElementById('digital').innerText = `${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
         document.getElementById('as').style.transform = `translateX(-50%) rotate(${s * 6}deg)`;
         document.getElementById('am').style.transform = `translateX(-50%) rotate(${m * 6}deg)`;
         document.getElementById('ah').style.transform = `translateX(-50%) rotate(${(h % 12) * 30 + m * 0.5}deg)`;
 
-        let activeData = { "Babies": "---", "Cavalo": "---", "Mamãe": "---", "Papai": "---" };
+        // Captura de tarefas ativas
+        let activeTasks = { "Babies": "---", "Cavalo": "---", "Mamãe": "---", "Papai": "---" };
 
-        // Lógica de Varredura Segura: ignora cellIndex e usa a estrutura lógica da tabela
-        const rows = document.querySelectorAll('#routine-table tbody tr');
-        rows.forEach(row => {
-            const cells = row.querySelectorAll('td[data-t]');
-            cells.forEach(cell => {
-                const [sStr, eStr] = cell.dataset.t.split('-');
-                let start = toM(sStr), end = toM(eStr);
-                if (end === 0) end = 1440;
-                let active = (start < end) ? (nowM >= start && nowM < end) : (nowM >= start || nowM < end);
+        document.querySelectorAll('td[data-t]').forEach(c => {
+            const [sStr, eStr] = c.dataset.t.split('-');
+            let start = toM(sStr), end = toM(eStr);
+            if (end === 0) end = 1440;
+            let active = (start < end) ? (nowM >= start && nowM < end) : (nowM >= start || nowM < end);
 
-                if (active) {
-                    cell.classList.add('active-task');
-                    
-                    // Identificação manual da coluna para evitar erro de rowspan
-                    // Verifica em qual coluna a célula "deveria" estar
-                    let tempIdx = cell.cellIndex;
-                    // Se for a primeira linha da rotina, o index bate com o Header
-                    // Mas como há rowspans, mapeamos pelo texto ou posição visual
-                    // A solução mais robusta é checar o Header pai baseado no alinhamento visual:
-                    const headers = ["Horário", "Babies", "Cavalo", "Mamãe", "Papai"];
-                    
-                    // Gambiarra técnica necessária: Como cellIndex falha com rowspan, 
-                    // buscamos a tarefa ativa que coincide com o tempo ATUAL e extraímos para o painel.
-                    // Varremos cada coluna individualmente:
-                } else {
-                    cell.classList.remove('active-task');
-                }
-            });
+            if (active) {
+                c.classList.add('active-task');
+                const p = c.dataset.p;
+                if (p) activeTasks[p] = c.innerText;
+            } else {
+                c.classList.remove('active-task');
+            }
         });
 
-        // Nova Varredura por coluna (Garante que Babies nunca pegue tarefa do Papai)
-        names.forEach((name, idx) => {
-            const colIdx = idx + 1; // 1=Babies, 2=Cavalo, etc.
-            const allPossibleCells = document.querySelectorAll(`#routine-table td:nth-child(n)`);
-            
-            // Filtramos apenas as células que estão marcadas como active-task e pertencem à lógica daquela pessoa
-            document.querySelectorAll('.active-task').forEach(ac => {
-                // Se a célula contém um data-t e está ativa, verificamos a qual "dono" ela pertence
-                // baseado na posição dela no HTML original ou texto
-                names.forEach(n => {
-                    const cellName = getOwner(ac);
-                    if(cellName) activeData[cellName] = ac.innerText;
-                });
-            });
-        });
-
+        // Ciclo de 3 segundos
         const cycleIndex = Math.floor(s / 3) % 4;
         const currentName = names[cycleIndex];
         document.getElementById('status-name').innerText = currentName;
-        document.getElementById('status-task').innerText = activeData[currentName];
-    }
-
-    // Função auxiliar para identificar o dono da célula sem depender do cellIndex instável
-    function getOwner(cell) {
-        const row = cell.parentElement;
-        const allCells = Array.from(row.children);
-        const cellIdx = allCells.indexOf(cell);
-        
-        // Mapeamento fixo baseado na sua estrutura de tabela específica
-        // Se a linha tem 5 células, é direto. Se tem menos, compensamos o rowspan anterior.
-        if (allCells.length === 5) {
-            return names[cellIdx - 1];
-        } else {
-            // Se a linha tem menos de 5, ela começou com um rowspan. 
-            // Verificamos o conteúdo para decidir o dono
-            const txt = cell.innerText;
-            if (txt.includes("CMT") || txt.includes("Telas") || txt.includes("Cozinha")) return "Cavalo";
-            if (txt.includes("Dormir") && cell.dataset.t === "06:00-09:00") return "Mamãe"; // Caso específico da manhã
-            if (txt.includes("Ritual") || txt.includes("Higiene")) return "Babies";
-            if (txt.includes("Faxina") || txt.includes("Novela") || txt.includes("UNINASSAU")) return "Mamãe";
-            if (txt.includes("Supervisão") || txt.includes("IFMA") || txt.includes("Faxina")) return "Papai";
-            
-            // Fallback por eliminação lógica simples
-            return null; 
-        }
+        document.getElementById('status-task').innerText = activeTasks[currentName];
     }
 
     setInterval(update, 1000);
