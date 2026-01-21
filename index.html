@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rotina Familiar - Fixa</title>
+    <title>Rotina Familiar</title>
     <style>
         :root {
             --bg: #050505;
             --text: #c0c0c0;
             --border: #222;
             --accent: #00ff41;
-            --highlight: #1a331a;
+            --highlight-bg: #1a331a;
         }
 
         body {
@@ -32,52 +32,39 @@
             box-sizing: border-box;
         }
 
-        /* Painel da Esquerda (2/3) */
-        .left-panel {
-            flex: 2;
-            height: 100%;
-            display: flex;
-        }
+        .left-panel { flex: 2; height: 100%; }
 
         table {
             width: 100%;
             height: 100%;
             border-collapse: collapse;
             table-layout: fixed;
-            font-size: clamp(10px, 1.2vh, 14px);
+            font-size: clamp(10px, 1.2vh, 13px);
         }
 
         th, td {
             border: 1px solid var(--border);
             text-align: center;
-            padding: 1px;
-            position: relative;
+            padding: 2px;
+            transition: background-color 0.5s;
         }
 
         th { background: #151515; color: #fff; height: 30px; }
+        .time-col { width: 90px; font-weight: bold; background: #0d0d0d; color: #666; }
 
-        .time-col { 
-            width: 90px; 
-            font-weight: bold; 
-            background: #0d0d0d; 
-            color: #888;
+        /* DESTAQUE INDIVIDUAL DA TAREFA */
+        .task-active {
+            background-color: var(--highlight-bg) !important;
+            color: var(--accent) !important;
+            font-weight: bold;
+            animation: pulse-task 2s infinite ease-in-out;
         }
 
-        /* Efeito de Destaque */
-        .active-now {
-            background-color: var(--highlight) !important;
-            color: #fff;
-            outline: 2px solid var(--accent);
-            z-index: 10;
-            animation: pulse 3s infinite ease-in-out;
-        }
-
-        @keyframes pulse {
+        @keyframes pulse-task {
             0%, 100% { opacity: 1; }
             50% { opacity: 0.6; }
         }
 
-        /* Painel da Direita (1/3) */
         .right-panel {
             flex: 1;
             display: flex;
@@ -85,7 +72,7 @@
             justify-content: center;
             align-items: center;
             border-left: 1px solid var(--border);
-            gap: 40px;
+            gap: 20px;
         }
 
         #digital-clock {
@@ -106,14 +93,13 @@
             position: absolute;
             bottom: 50%; left: 50%;
             transform-origin: bottom;
-            background: #aaa;
+            background: #888;
             border-radius: 4px;
             transform: translateX(-50%);
         }
         .hour { width: 6px; height: 25%; z-index: 3; }
         .min { width: 4px; height: 38%; z-index: 2; }
         .sec { width: 2px; height: 45%; background: #ff4500; z-index: 1; }
-        
         .center-pin {
             position: absolute; top: 50%; left: 50%;
             width: 10px; height: 10px; background: #fff;
@@ -125,7 +111,7 @@
 
 <div id="master-wrapper">
     <div class="left-panel">
-        <table>
+        <table id="routine-table">
             <thead>
                 <tr>
                     <th style="width: 18%;">Horário</th>
@@ -136,170 +122,38 @@
                 </tr>
             </thead>
             <tbody>
-                <tr data-start="06:00" data-end="07:00">
-                    <td class="time-col">06:00 - 07:00</td>
-                    <td rowspan="3">Dormir</td>
-                    <td>Organização Pessoal</td>
-                    <td rowspan="3">Dormir</td>
-                    <td>Preparo Café da Manhã</td>
+                <tr data-row-start="360"> <td class="time-col">06:00 - 07:00</td>
+                    <td rowspan="3" data-start="360" data-end="600">Dormir</td>
+                    <td data-start="360" data-end="420">Organização Pessoal</td>
+                    <td rowspan="3" data-start="360" data-end="600">Dormir</td>
+                    <td data-start="360" data-end="420">Preparo Café da Manhã</td>
                 </tr>
-                <tr data-start="07:00" data-end="09:00">
+                <tr>
                     <td class="time-col">07:00 - 09:00</td>
-                    <td rowspan="4">CMT</td>
-                    <td>Translado CMT + Café</td>
+                    <td rowspan="4" data-start="420" data-end="735">CMT</td>
+                    <td data-start="420" data-end="540">Translado CMT + Café</td>
                 </tr>
-                <tr data-start="09:00" data-end="10:00">
+                <tr>
                     <td class="time-col">09:00 - 10:00</td>
-                    <td>Faxina</td>
+                    <td data-start="540" data-end="600">Faxina</td>
                 </tr>
-                <tr data-start="10:00" data-end="11:00">
+                <tr>
                     <td class="time-col">10:00 - 11:00</td>
-                    <td rowspan="2">Café + Org. Terapia + Espaço Cativar</td>
-                    <td rowspan="2">Café + Org. Terapia</td>
-                    <td>Org. Terapia + Espaço Cativar</td>
+                    <td rowspan="2" data-start="600" data-end="735">Café + Org. Terapia + Espaço Cativar</td>
+                    <td rowspan="2" data-start="600" data-end="735">Café + Org. Terapia</td>
+                    <td data-start="600" data-end="660">Org. Terapia + Espaço Cativar</td>
                 </tr>
-                <tr data-start="11:00" data-end="12:15">
+                <tr>
                     <td class="time-col">11:00 - 12:15</td>
-                    <td>Preparo do Almoço</td>
+                    <td data-start="660" data-end="735">Preparo do Almoço</td>
                 </tr>
-                <tr data-start="12:15" data-end="13:00">
+                <tr>
                     <td class="time-col">12:15 - 13:00</td>
-                    <td>Org. Escola</td>
-                    <td>Cuidado com Irmãs</td>
-                    <td rowspan="2">Almoço + Translado</td>
-                    <td>Translado + Org. Escola</td>
+                    <td data-start="735" data-end="780">Org. Escola</td>
+                    <td data-start="735" data-end="780">Cuidado com Irmãs</td>
+                    <td rowspan="2" data-start="735" data-end="840">Almoço + Translado</td>
+                    <td data-start="735" data-end="780">Translado + Org. Escola</td>
                 </tr>
-                <tr data-start="13:00" data-end="14:00">
+                <tr>
                     <td class="time-col">13:00 - 14:00</td>
-                    <td>Almoço + Translado</td>
-                    <td>Almoço + Descanso</td>
-                    <td>Almoço + Translado</td>
-                </tr>
-                <tr data-start="14:00" data-end="16:45">
-                    <td class="time-col">14:00 - 16:45</td>
-                    <td>Escola</td>
-                    <td>Org. Cozinha + Estudo</td>
-                    <td>UNINASSAU</td>
-                    <td>IFMA</td>
-                </tr>
-                <tr data-start="16:45" data-end="18:00">
-                    <td class="time-col">16:45 - 18:00</td>
-                    <td rowspan="2">Translado + Celular</td>
-                    <td>Telas</td>
-                    <td rowspan="2">Translado Escolar</td>
-                    <td rowspan="2">Translado Escolar</td>
-                </tr>
-                <tr data-start="18:00" data-end="19:00">
-                    <td class="time-col">18:00 - 19:00</td>
-                    <td>Higiene Pessoal</td>
-                </tr>
-                <tr data-start="19:00" data-end="20:00">
-                    <td class="time-col">19:00 - 20:00</td>
-                    <td>TV</td>
-                    <td>Leitura</td>
-                    <td>Preparo do Jantar</td>
-                    <td>Supervisão Crianças</td>
-                </tr>
-                <tr data-start="20:00" data-end="21:00">
-                    <td class="time-col">20:00 - 21:00</td>
-                    <td>Jantar</td>
-                    <td rowspan="2">Jantar + Org. Cozinha + Ritual Sono</td>
-                    <td>Jantar</td>
-                    <td>Jantar</td>
-                </tr>
-                <tr data-start="21:00" data-end="22:00">
-                    <td class="time-col">21:00 - 22:00</td>
-                    <td>Ritual de Sono</td>
-                    <td>Faxina + Novela</td>
-                    <td>Supervisão Crianças</td>
-                </tr>
-                <tr data-start="22:00" data-end="23:00">
-                    <td class="time-col">22:00 - 23:00</td>
-                    <td rowspan="3">Dormir</td>
-                    <td rowspan="3">Dormir</td>
-                    <td rowspan="2">BBB</td>
-                    <td rowspan="2">BBB</td>
-                </tr>
-                <tr data-start="23:00" data-end="00:00">
-                    <td class="time-col">23:00 - 00:00</td>
-                </tr>
-                <tr data-start="00:00" data-end="06:00">
-                    <td class="time-col">00:00 - 06:00</td>
-                    <td>Dormir</td>
-                    <td>Dormir</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-
-    <div class="right-panel">
-        <div id="digital-clock">00:00:00</div>
-        <div id="analog-clock">
-            <div class="center-pin"></div>
-            <div id="h-hand" class="hand hour"></div>
-            <div id="m-hand" class="hand min"></div>
-            <div id="s-hand" class="hand sec"></div>
-        </div>
-    </div>
-</div>
-
-<script>
-    function timeToMinutes(str) {
-        const [h, m] = str.split(':').map(Number);
-        return h * 60 + m;
-    }
-
-    function update() {
-        const now = new Date();
-        const h = now.getHours();
-        const m = now.getMinutes();
-        const s = now.getSeconds();
-        const currentTotalMin = h * 60 + m;
-
-        // Digital
-        document.getElementById('digital-clock').innerText = 
-            `${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
-
-        // Analógico
-        document.getElementById('s-hand').style.transform = `translateX(-50%) rotate(${s * 6}deg)`;
-        document.getElementById('m-hand').style.transform = `translateX(-50%) rotate(${m * 6}deg)`;
-        document.getElementById('h-hand').style.transform = `translateX(-50%) rotate(${(h % 12) * 30 + m * 0.5}deg)`;
-
-        // Lógica de destaque da linha
-        document.querySelectorAll('tbody tr').forEach(tr => {
-            const start = timeToMinutes(tr.dataset.start);
-            let end = timeToMinutes(tr.dataset.end);
-            
-            // Tratamento para meia-noite
-            if (end === 0) end = 1440; 
-            
-            let isActive = false;
-            if (start < end) {
-                // Horário normal (ex: 09:00 - 10:00)
-                isActive = (currentTotalMin >= start && currentTotalMin < end);
-            } else {
-                // Horário atravessa meia-noite (ex: 23:00 - 06:00)
-                isActive = (currentTotalMin >= start || currentTotalMin < end);
-            }
-
-            if (isActive) {
-                tr.classList.add('active-now');
-            } else {
-                tr.classList.remove('active-now');
-            }
-        });
-
-        // Anti-Burn-in (Movimentação circular sutil do wrapper)
-        const wrapper = document.getElementById('master-wrapper');
-        const shiftX = Math.sin(now.getTime() / 10000) * 3;
-        const shiftY = Math.cos(now.getTime() / 10000) * 3;
-        wrapper.style.transform = `translate(${shiftX}px, ${shiftY}px)`;
-    }
-
-    // Atualização rápida para o relógio e lógica
-    setInterval(update, 1000);
-    update();
-</script>
-
-</body>
-</html>
+                    <td data-start="780" data-end="840
