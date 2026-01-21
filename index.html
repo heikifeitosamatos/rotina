@@ -2,7 +2,7 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Rotina Familiar - Oficial</title>
+    <title>Rotina Familiar - Versão Final</title>
     <style>
         :root {
             --bg: #050505;
@@ -30,7 +30,7 @@
             box-sizing: border-box;
         }
 
-        .left-panel { flex: 2; display: flex; flex-direction: column; padding-right: 5px; }
+        .left-panel { flex: 2.2; display: flex; flex-direction: column; }
 
         table {
             width: 100%;
@@ -43,22 +43,22 @@
         th, td {
             border: 1px solid var(--border);
             text-align: center;
-            padding: 1px;
+            padding: 2px;
             background: #080808;
             overflow: hidden;
+            word-wrap: break-word;
         }
 
         th { background: #151515; color: white; height: 30px; font-size: 13px; }
         .time-col { width: 95px; font-weight: bold; color: #666; background: #0d0d0d; }
 
+        /* Estilo de Destaque */
         .active-task {
             background-color: var(--highlight) !important;
             color: var(--accent) !important;
             font-weight: bold;
-            animation: pulse 2.5s infinite ease-in-out;
+            box-shadow: inset 0 0 8px rgba(0, 255, 65, 0.2);
         }
-
-        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
 
         .right-panel {
             flex: 1;
@@ -89,7 +89,7 @@
 
 <div id="master-wrapper">
     <div class="left-panel">
-        <table>
+        <table id="routine-table">
             <thead>
                 <tr>
                     <th>Horário</th>
@@ -109,29 +109,30 @@
                 </tr>
                 <tr>
                     <td class="time-col">07:00 - 09:00</td>
-                    <td rowspan="3" data-t="07:00-12:15">CMT</td>
+                    <td rowspan="3" data-t="07:00-11:45">CMT</td>
                     <td data-t="07:00-09:00">Translado CMT + Café da Manhã</td>
                 </tr>
                 <tr>
                     <td class="time-col">09:00 - 10:00</td>
-                    <td rowspan="3" data-t="09:00-12:15">Café da Manhã + Org. para Terapia + Espaço Cativar</td>
-                    <td rowspan="2" data-t="09:00-11:00">Café da Manhã + Org. para Terapia</td>
+                    <td rowspan="3" data-t="09:00-11:45">Café da Manhã + Org. para Terapia + Espaço Cativar</td>
+                    <td data-t="09:00-10:00">Café da Manhã + Org. para Terapia</td>
                     <td data-t="09:00-10:00">Faxina</td>
                 </tr>
                 <tr>
                     <td class="time-col">10:00 - 11:00</td>
-                    <td rowspan="2" data-t="10:00-12:15">Faxina + Org. para Terapia + Espaço Cativar</td>
+                    <td rowspan="2" data-t="10:00-11:45">Preparo do Almoço</td>
+                    <td data-t="10:00-11:00">Faxina + Org. para Terapia + Espaço Cativar</td>
                 </tr>
                 <tr>
-                    <td class="time-col">11:00 - 12:15</td>
-                    <td data-t="11:00-12:15">Preparo do Almoço</td>
+                    <td class="time-col">11:00 - 11:45</td>
+                    <td data-t="11:00-11:45">Preparo do Almoço</td>
                 </tr>
                 <tr>
-                    <td class="time-col">12:15 - 13:00</td>
-                    <td data-t="12:15-13:00">Organização pra Escola</td>
-                    <td data-t="12:15-13:00">Cuidados com as Irmãs</td>
-                    <td rowspan="2" data-t="12:15-14:00">Almoço + Translado</td>
-                    <td data-t="12:15-13:00">Translado CMT + Org. pra Escola</td>
+                    <td class="time-col">11:45 - 13:00</td>
+                    <td data-t="11:45-13:00">Organização pra Escola</td>
+                    <td data-t="11:45-13:00">Cuidados com as Irmãs</td>
+                    <td rowspan="2" data-t="11:45-14:00">Almoço + Translado</td>
+                    <td data-t="11:45-13:00">Translado CMT + Org. pra Escola</td>
                 </tr>
                 <tr>
                     <td class="time-col">13:00 - 14:00</td>
@@ -142,7 +143,7 @@
                 <tr>
                     <td class="time-col">14:00 - 16:45</td>
                     <td data-t="14:00-16:45">Escola</td>
-                    <td data-t="14:00-16:45">Org. da Cozinha + Momento Livre + Estudo</td>
+                    <td data-t="14:00-16:45">Org. Cozinha + Momento Livre + Estudo</td>
                     <td data-t="14:00-16:45">UNINASSAU</td>
                     <td data-t="14:00-16:45">IFMA</td>
                 </tr>
@@ -169,7 +170,7 @@
                 <tr>
                     <td class="time-col">20:00 - 21:00</td>
                     <td data-t="20:00-21:00">Jantar</td>
-                    <td rowspan="2" data-t="20:00-22:00">Jantar + Org. da Cozinha + Ritual do Sono</td>
+                    <td rowspan="2" data-t="20:00-22:00">Jantar + Org. Cozinha + Ritual Sono</td>
                     <td data-t="20:00-21:00">Jantar</td>
                     <td data-t="20:00-21:00">Jantar</td>
                 </tr>
@@ -206,12 +207,15 @@
             <div id="am" class="hand m"></div>
             <div id="as" class="hand s"></div>
         </div>
-        <div style="font-size: 11px; color: #333;">Anti-Burn-In Ativado</div>
+        <div style="font-size: 10px; color: #222;">Burn-In Shield Active</div>
     </div>
 </div>
 
 <script>
-    function toM(s) { const [h, m] = s.split(':').map(Number); return h * 60 + m; }
+    function toM(s) { 
+        const [h, m] = s.split(':').map(Number); 
+        return h * 60 + m; 
+    }
 
     function update() {
         const n = new Date();
@@ -220,22 +224,33 @@
         const s = n.getSeconds();
         const nowM = h * 60 + m;
 
+        // Digital e Analógico
         document.getElementById('digital').innerText = `${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
         document.getElementById('as').style.transform = `translateX(-50%) rotate(${s * 6}deg)`;
-        document.getElementById('am').style.transform = `translateX(-50%) rotate(${m * 6}deg)`;
+        document.getElementById('am').style.transform = `translateX(-50%) rotate(${m * 6 + s * 0.1}deg)`;
         document.getElementById('ah').style.transform = `translateX(-50%) rotate(${(h % 12) * 30 + m * 0.5}deg)`;
 
+        // Lógica de Destaque por Célula
         document.querySelectorAll('td[data-t]').forEach(c => {
             const [sStr, eStr] = c.dataset.t.split('-');
-            let start = toM(sStr), end = toM(eStr);
-            if (end === 0) end = 1440;
+            let start = toM(sStr);
+            let end = toM(eStr);
+            
+            if (end === 0) end = 1440; // Meia-noite
 
-            let active = (start < end) ? (nowM >= start && nowM < end) : (nowM >= start || nowM < end);
+            let active = false;
+            if (start < end) {
+                active = (nowM >= start && nowM < end);
+            } else {
+                active = (nowM >= start || nowM < end); // Cross-night
+            }
+
             if (active) c.classList.add('active-task'); else c.classList.remove('active-task');
         });
 
+        // Micro-movimento Anti-Burn-In
         const wrap = document.getElementById('master-wrapper');
-        const drift = n.getTime() / 4000;
+        const drift = n.getTime() / 5000;
         wrap.style.transform = `translate(${Math.cos(drift)*2}px, ${Math.sin(drift)*2}px)`;
     }
 
